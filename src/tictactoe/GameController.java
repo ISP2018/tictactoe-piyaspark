@@ -1,6 +1,5 @@
 package tictactoe;
 
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,12 +21,16 @@ public class GameController {
 	private Button newGameButton;
 	
 	private TicTacToeGame game;
-	
+
+	private BoardSquare cell;
 
 	public GameController() {
 		// nothing to iniitialize yet.
 	}
-	
+
+	/**
+	 * initialize the class.
+	 */
 	@FXML
 	public void initialize() {
 		game = new TicTacToeGame(3);
@@ -48,13 +51,22 @@ public class GameController {
 		
 		updateGameStatus();
 	}
-	
+
+	/**
+	 * Update game status to latest status.
+	 */
 	private void updateGameStatus() {
 		Player winner = game.winner();
-		if (winner != Player.NONE) topLabel.setText("Player "+winner+" wins!");
-		else if (game.isGameOver()) topLabel.setText("Draw. No winner.");
+		if (winner != Player.NONE) {
+			topLabel.setText("Player "+winner+" wins!");
+			centerPane.setDisable(true);
+		}
+		else if (game.isGameOver()) {
+			topLabel.setText("Draw. No winner.");
+			centerPane.setDisable(true);
+		}
 		else topLabel.setText("Next Player: " + game.getNextPlayer());
-		
+
 	}
 
 	
@@ -62,7 +74,7 @@ public class GameController {
 	public void handleCellClicked(MouseEvent event) {
 		Object source = event.getSource();
 		if (source instanceof BoardSquare) {
-			BoardSquare cell = (BoardSquare)source;
+			cell = (BoardSquare)source;
 			int row = cell.getRow();
 			int col = cell.getColumn();
 			double size = cell.getHeight();
@@ -79,5 +91,6 @@ public class GameController {
 	/** Handler for button click to start a new game. */
 	public void handleNewGameEvent(ActionEvent event) {
 		game.startNewGame();
+		centerPane.setDisable(false);
 	}
 }
