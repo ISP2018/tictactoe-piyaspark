@@ -22,7 +22,7 @@
         <!-- include all Jars in the lib directory (for JUnit) -->
         <fileset dir="lib" includes="*.jar" />
         <!-- always need the build directory on the classpath -->
-        <pathelement location="bin" />
+        <pathelement location="${build.dir}" />
     </path>
 
     <!-- The "deps" target is used on Travis CI to install dependencies. -->
@@ -43,13 +43,13 @@
     </target>
 
     <target name="clean" description="Delete build products and build directory">
-        <delete dir="bin" />
+        <delete dir="${build.dir}" />
     </target>
 
     <!-- create the build directory for output -->
     <target name="init" description="Create output directories if they don't exist" >
-        <mkdir dir="bin" />
-        <mkdir dir="bin/test" />
+        <mkdir dir="${build.dir}" />
+        <mkdir dir="${test.build.dir}" />
     </target>
 
     <!-- compile the source code -->
@@ -66,7 +66,7 @@
     <!-- compile the test code -->
     <target name="test-compile" depends="init,compile"
             description="Compile unit test source code" >
-        <javac srcdir="test" destdir="bin/test" includeantruntime="false" >
+        <javac srcdir="${test.src.dir}" destdir="b${test.build.dir}" includeantruntime="false" >
             <classpath refid="test.classpath" />
         </javac>
     </target>
@@ -76,11 +76,11 @@
         <junit fork="true" printsummary="on" haltonfailure="false">
             <classpath>
                 <path refid="test.classpath" />
-                <pathelement location="bin/test" />
+                <pathelement location="${test.build.dir}" />
             </classpath>
             <!-- What classes contain JUnit tests? -->
             <batchtest>
-                <fileset dir="bin/test" includes="**/*Test.class" />
+                <fileset dir="${test.build.dir}" includes="**/*Test.class" />
             </batchtest>
         </junit>
     </target>
