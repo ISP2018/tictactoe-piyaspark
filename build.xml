@@ -53,7 +53,7 @@
     </target>
 
     <!-- compile the source code -->
-    <target name="compile" depends="init" description="Compile source code" >
+    <target name="compile" depends="init, deps" description="Compile source code" >
         <javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" />
     <!-- copy fxml files from src tree to build tree, including subdirs -->
     <copy todir=" ${build.dir}">
@@ -66,7 +66,7 @@
     <!-- compile the test code -->
     <target name="test-compile" depends="init,compile"
             description="Compile unit test source code" >
-        <javac srcdir="${test.src.dir}" destdir="b${test.build.dir}" includeantruntime="false" >
+        <javac srcdir="${test.src.dir}" destdir="${test.build.dir}" includeantruntime="false" >
             <classpath refid="test.classpath" />
         </javac>
     </target>
